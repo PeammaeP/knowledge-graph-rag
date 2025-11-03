@@ -82,12 +82,12 @@ def hybrid_search_pipeline():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='A simple program that greets a user.')
-    parser.add_argument("vector_search", action='store_true')
+    parser.add_argument("--use_hybrid_search", action='store_true')
 
     # Parse the command-line arguments
     args = parser.parse_args()
 
-    if args.vector_search:
-        vector_search_pipeline()
-    else:
+    if args.use_hybrid_search:
         hybrid_search_pipeline()
+    else:
+        vector_search_pipeline()
