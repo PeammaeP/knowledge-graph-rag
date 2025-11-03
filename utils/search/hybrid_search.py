@@ -2,7 +2,7 @@ from neo4j.exceptions import ClientError
 
 def _ensure_indexes(driver, embedding_dim=384,
                     vector_index_name="pdf",
-                    fulltext_index_name="ftPdfChunk",
+                    fulltext_index_name="PdfChunkFulltext",
                     similarity="cosine"):
     driver.execute_query(f"""
         CREATE VECTOR INDEX {vector_index_name} IF NOT EXISTS
