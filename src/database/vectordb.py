@@ -1,6 +1,6 @@
 from neo4j import GraphDatabase
 
-def get_graph_database():
+def init_graph_database():
     driver = GraphDatabase.driver("neo4j://localhost:7687", auth=("neo4j", "password"))
 
     driver.execute_query("""CREATE VECTOR INDEX pdf IF NOT EXISTS
