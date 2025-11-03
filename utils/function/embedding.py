@@ -86,7 +86,6 @@ def _build_prompt(system_message: str, user_message: str) -> dict:
         _ensure_chat_model()
         return {"input_ids": _tokenizer(prompt, return_tensors="pt").input_ids.to(_chat_model.device)}
 
-
 def get_model_stream(system_message: str, user_message: str) -> Iterable[str]:
     """
     Streams generated text chunks from a local HF model.
