@@ -1,7 +1,7 @@
 import requests
 import pdfplumber
 
-def get_text_from_file(remote_pdf_url, pdf_filename):
+def get_text_from_file(remote_pdf_url, pdf_filename: str):
     response = requests.get(remote_pdf_url)
 
     text = ""
@@ -10,10 +10,11 @@ def get_text_from_file(remote_pdf_url, pdf_filename):
         with open(pdf_filename, "wb") as pdf_file:
             pdf_file.write(response.content)
 
-        with pdfplumber.open(pdf_filename) as pdf:
-            for page in pdf.pages:
-                text += page.extract_text()
-
-        return text
     else:
         print("Failed to download the PDF. Status code:", response.status_code)
+
+    with pdfplumber.open(pdf_filename) as pdf:
+        for page in pdf.pages:
+            text += page.extract_text()
+
+    return text

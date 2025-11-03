@@ -3,7 +3,7 @@ import argparse
 from utils.function.chunks import chunk_text
 from utils.function.getfile import get_text_from_file
 from utils.function.embedding import get_embedding, get_model_stream
-from utils.database.vectordb import init_graph_database
+from utils.database.vector_db import init_graph_database
 
 class Config:
     # File Configuration
@@ -16,16 +16,16 @@ class Config:
 
     # Cypher Query Template
     cypher_query = '''
-    WITH $chunks as chunks, range(0, size($chunks)) AS index
-    UNWIND index AS i
-    WITH i, chunks[i] AS chunk, $embeddings[i] AS embedding
-    MERGE (c:Chunk {index: i})
-    SET c.text = chunk, c.embedding = embedding
+        WITH $chunks as chunks, range(0, size($chunks)) AS index
+        UNWIND index AS i
+        WITH i, chunks[i] AS chunk, $embeddings[i] AS embedding
+        MERGE (c:Chunk {index: i})
+        SET c.text = chunk, c.embedding = embedding
     '''
 
     query = '''
-    CALL db.index.vector.queryNodes('pdf', 2, $question_embedding) YIELD node AS hits, score
-    RETURN hits.text AS text, score, hits.index AS index
+        CALL db.index.vector.queryNodes('pdf', 2, $question_embedding) YIELD node AS hits, score
+        RETURN hits.text AS text, score, hits.index AS index
     '''
 
 class UserPerform:
@@ -34,7 +34,7 @@ class UserPerform:
 def vector_search_pipeline():
     config = Config()
 
-    text = get_text_from_file(config.remote_pdf_url, config.__init_subclass__)
+    text = get_text_from_file(config.remote_pdf_url, config.pdf_filename)
 
     chunks = chunk_text(text, config.chunk_size, config.overlap)
 
@@ -73,9 +73,13 @@ def vector_search_pipeline():
 
     stream = get_model_stream(context["system_message"], context["user_message"])
 
-    # get the final answer from LLM
-    for chunk in stream:
-        print(chunk.choices[0].delta.content or "", end="")
+    final_answer_parts = []
+    for token in stream:
+        print(token, end="", flush=True)   # live stream
+        final_answer_parts.append(token)
+
+    final_answer = "".join(final_answer_parts)
+
 
 def hybrid_search_pipeline():
     print()
