@@ -16,7 +16,7 @@ Install Essential Libraries
 pip install -r requirements.txt
 ```
 
-### 2) Get OpenAI API Key
+### 2) Get HuggingFace API Key
 
 ### 3) Create your own Neo4j cloud-based database
 
