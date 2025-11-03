@@ -1,9 +1,9 @@
 import argparse
 
-from src.utils.chunks import chunk_text
-from src.utils.getfile import get_text_from_file
-from src.utils.embedding import get_embedding, get_model_stream
-from src.database.vectordb import init_graph_database
+from utils.function.chunks import chunk_text
+from utils.function.getfile import get_text_from_file
+from utils.function.embedding import get_embedding, get_model_stream
+from utils.database.vectordb import init_graph_database
 
 class Config:
     # File Configuration
