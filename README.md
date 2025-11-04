@@ -1,4 +1,4 @@
-# knowledge-graph-rag
+# How to start
 
 ### 1) Conda Environment Initiation
 ```python
